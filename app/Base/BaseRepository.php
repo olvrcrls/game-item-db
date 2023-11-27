@@ -2,6 +2,8 @@
 
 namespace App\Base;
 
+use Exception;
+
 abstract class BaseRepository
 {
     /**
@@ -53,10 +55,14 @@ abstract class BaseRepository
      */
     public function delete(int $id): bool
     {
-        $model = $this->model->findOrFail($id);
-        $model->delete();
+        try {
+            $model = $this->model->findOrFail($id);
+            $model->delete();
 
-        return $model;
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
