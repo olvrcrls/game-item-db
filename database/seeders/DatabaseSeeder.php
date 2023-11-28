@@ -12,9 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->command->info('Seeding the database...');
+        $this->command->info('Seeding the User records...');
         \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
+        $this->command->info('Seeding the Game records...');
+        \App\Models\Game::factory(25)->create();
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
