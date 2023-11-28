@@ -21,6 +21,7 @@ return new class extends Migration
 
             $table->string('type', 255)->nullable();
             $table->string('rarity', 100)->nullable();
+            $table->unsignedInteger('level')->nullable();
             
             $table->boolean('deprecated')->default(false);
 
