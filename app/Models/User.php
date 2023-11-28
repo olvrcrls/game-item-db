@@ -15,23 +15,28 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, HasEncryption;
 
+    /**
+     * The attributes that should be encrypted.
+     * 
+     * @var array<string>
+     */
     protected array $encryptable = [
-        'email',
+        'email', 'username'
     ];
 
     /**
      * The attributes that are not mass assignable.
      *
-     * @var array<int, string>
+     * @var array<string>
      */
-    protected array $guarded = ['id'];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-    protected array $hidden = [
+    protected $hidden = [
         'password',
         'remember_token',
     ];
@@ -41,7 +46,7 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected array $casts = [
+    protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
