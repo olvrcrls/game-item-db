@@ -3,6 +3,8 @@
 namespace App\Base;
 
 use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 abstract class BaseRepository
 {
@@ -12,17 +14,25 @@ abstract class BaseRepository
     protected $model;
 
     /**
+     * @var string
+     */
+    protected $resource;
+
+    /**
      * BaseRepository constructor.
      */
     public function __construct()
     {
         $this->model = $this->getModel();
+        $this->resource = $this->getResource();
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Model
      */
-    abstract public function getModel();
+    abstract public function getModel(): Model;
+
+    abstract public function getResource(): string;
 
     /**
      * @param array $data
@@ -76,5 +86,19 @@ abstract class BaseRepository
         $model = $this->model->find($id);
 
         return $model ?? false;
+    }
+
+    /**
+     * @param array<string> $columns
+     * @return JsonResource
+     */
+    public function all(...$columns): JsonResource
+    {
+        if (empty($columns)) {
+            $columns = ['*'];
+        }
+
+        $data = $this->model->all($columns);
+        return new $this->resource($data);
     }
 }

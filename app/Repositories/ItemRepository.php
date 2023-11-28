@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 use App\Base\BaseRepository;
+use App\Http\Resources\ItemResource;
 use App\Models\Item;
 
 class ItemRepository extends BaseRepository
@@ -12,5 +13,13 @@ class ItemRepository extends BaseRepository
     public function getModel(): Item
     {
         return new Item();
+    }
+
+    /**
+     * Returns the resource class.
+     */
+    public function getResource(): string
+    {
+        return ItemResource::class;
     }
 }

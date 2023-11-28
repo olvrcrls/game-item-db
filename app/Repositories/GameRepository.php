@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Base\BaseRepository;
 use App\Http\Resources\GameResource;
 use App\Models\Game;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class GameRepository extends BaseRepository
 {
@@ -13,13 +14,8 @@ class GameRepository extends BaseRepository
         return new Game();
     }
 
-    /**
-     * @param array<string> $columns
-     * @return GameResource
-     */
-    public function all($columns = '*'): GameResource
+    public function getResource(): string
     {
-        $data = $this->model->all($columns);
-        return new GameResource($data);
+        return GameResource::class;
     }
 }
