@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('Seeding the Game records...');
         \App\Models\Game::factory(25)->create();
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+
+        $this->command->info('Seeding the Item records...');
+        \App\Models\Item::factory(100)->create();
     }
 }
