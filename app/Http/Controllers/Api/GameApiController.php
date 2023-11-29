@@ -7,12 +7,13 @@ use App\Repositories\GameRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class GameApiController extends Controller
 {
     protected GameRepository $gameRepository;
 
-    public function __cosntruct(GameRepository $gameRepository)
+    public function __construct(GameRepository $gameRepository)
     {
         $this->gameRepository = $gameRepository;
     }
@@ -26,7 +27,12 @@ class GameApiController extends Controller
             $data = $this->gameRepository->all();
             return JsonResponse::success(data: $data, message: 'Games retrieved successfully');
         } catch (Exception $e) {
-            
+            Log::error(
+                __FILE__ . '@' . __FUNCTION__ .
+                ' - ' . $e->getMessage()
+            );
+
+            return JsonResponse::error(message: 'Games could not be retrieved', code: 500);
         }
     }
 
