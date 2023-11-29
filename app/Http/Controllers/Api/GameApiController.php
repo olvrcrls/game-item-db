@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreGameRequest;
+use App\Http\Requests\UpdateGameRequest;
+use App\Models\Game;
 use App\Repositories\GameRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class GameApiController extends Controller
@@ -39,15 +41,25 @@ class GameApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreGameRequest $request)
     {
-        //
+        try {
+            $data = $this->gameRepository->create($request->validated());
+            return JsonResponse::success(data: $data, message: 'Game created successfully');
+        } catch (Exception $e) {
+            Log::error(
+                __FILE__ . '@' . __FUNCTION__ .
+                ' - ' . $e->getMessage()
+            );
+
+            return JsonResponse::error(message: 'Game could not be created', code: 500);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $game)
     {
         //
     }
@@ -55,9 +67,19 @@ class GameApiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateGameRequest $request, Game $game)
     {
-        //
+        try {
+            $data = $this->gameRepository->update($game, $request->validated());
+            return JsonResponse::success(data: $data, message: 'Game updated successfully');
+        } catch (Exception $e) {
+            Log::error(
+                __FILE__ . '@' . __FUNCTION__ .
+                ' - ' . $e->getMessage()
+            );
+
+            return JsonResponse::error(message: 'Game could not be updated', code: 500);
+        }
     }
 
     /**
