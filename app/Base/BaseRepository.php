@@ -3,6 +3,7 @@
 namespace App\Base;
 
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -41,21 +42,23 @@ abstract class BaseRepository
      */
     public function create(array $data)
     {
-        return $this->model->create($data);
+        $model = $this->model->create($data);
+        return new $this->resource([$model]);
     }
 
     /**
-     * @param int   $id
+     * @param int|Model $id
      * @param array $data
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update(int $id, array $data)
+    public function update(int|Model $id, array $data)
     {
-        $model = $this->model->findOrFail($id);
+        $model = $id instanceof Model ? $id : $this->model->findOrFail($id);
         $model->update($data);
 
-        return $model->fresh();
+        $model->fresh();
+        return new $this->resource([$model]);
     }
 
     /**
