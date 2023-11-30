@@ -17,6 +17,7 @@ class ItemFactory extends Factory
     public function definition(): array
     {
         return [
+            'uuid' => $this->faker->uuid,
             'name' => $this->faker->word,
             'game_id' => $this->faker->uuid,
             'image' => $this->faker->imageUrl(),
