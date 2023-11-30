@@ -20,12 +20,18 @@ abstract class BaseRepository
     protected $resource;
 
     /**
+     * @var string
+     */
+    protected $resourceDatum;
+
+    /**
      * BaseRepository constructor.
      */
     public function __construct()
     {
         $this->model = $this->getModel();
         $this->resource = $this->getResource();
+        $this->resourceDatum = $this->getResourceDatum();
     }
 
     /**
@@ -35,6 +41,8 @@ abstract class BaseRepository
 
     abstract public function getResource(): string;
 
+    abstract public function getResourceDatum(): string;
+
     /**
      * @param array $data
      *
@@ -43,7 +51,7 @@ abstract class BaseRepository
     public function create(array $data)
     {
         $model = $this->model->create($data);
-        return new $this->resource([$model]);
+        return new $this->resourceDatum($model);
     }
 
     /**
@@ -58,7 +66,7 @@ abstract class BaseRepository
         $model->update($data);
 
         $model->fresh();
-        return new $this->resource([$model]);
+        return new $this->resourceDatum($model);
     }
 
     /**
@@ -66,10 +74,14 @@ abstract class BaseRepository
      *
      * @return bool
      */
-    public function delete(int $id): bool
+    public function delete(string $id): bool
     {
         try {
-            $model = $this->model->findOrFail($id);
+            $model = $this->model->where($this->model->getRouteKeyName(), $id);
+            if (!$model->exists()) {
+                return false;
+            }
+
             $model->delete();
 
             return true;
@@ -88,7 +100,7 @@ abstract class BaseRepository
     {
         $model = $this->model->where($this->model->getRouteKeyName(), $id)->first();
 
-        return $model ? (new $this->resource([$model])) : false;
+        return $model ? (new $this->resourceDatum($model)) : false;
     }
 
     /**
