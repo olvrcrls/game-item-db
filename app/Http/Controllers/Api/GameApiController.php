@@ -61,7 +61,18 @@ class GameApiController extends Controller
      */
     public function show(string $game)
     {
-        //
+        try {
+            $data = $this->gameRepository->find($game);
+            return $data ? JsonResponse::success(data: $data, message: 'Game retrieved successfully')
+                        : JsonResponse::error(message: 'Game not found', code: 404);
+        } catch (Exception $e) {
+            Log::error(
+                __FILE__ . '@' . __FUNCTION__ .
+                ' - ' . $e->getMessage()
+            );
+
+            return JsonResponse::error(message: 'Game could not be retrieved', code: 500);
+        }
     }
 
     /**
@@ -87,6 +98,20 @@ class GameApiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $data = $this->gameRepository->delete($id);
+            if (!$data) {
+                return JsonResponse::error(message: 'Game not found', code: 404);
+            }
+            
+            return JsonResponse::success(data: $data, message: 'Game deleted successfully');
+        } catch (Exception $e) {
+            Log::error(
+                __FILE__ . '@' . __FUNCTION__ .
+                ' - ' . $e->getMessage()
+            );
+
+            return JsonResponse::error(message: 'Game could not be deleted', code: 500);
+        }
     }
 }
