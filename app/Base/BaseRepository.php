@@ -84,11 +84,11 @@ abstract class BaseRepository
      * @return \Illuminate\Database\Eloquent\Model|bool
      * @throws \Exception
      */
-    public function find(int $id)
+    public function find(string $id)
     {
-        $model = $this->model->find($id);
+        $model = $this->model->where($this->model->getRouteKeyName(), $id)->first();
 
-        return $model ?? false;
+        return $model ? (new $this->resource([$model])) : false;
     }
 
     /**
