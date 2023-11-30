@@ -45,7 +45,7 @@ class GameApiController extends Controller
     {
         try {
             $data = $this->gameRepository->create($request->validated());
-            return JsonResponse::success(data: $data, message: 'Game created successfully');
+            return JsonResponse::success(data: $data, message: 'Game created successfully', code: 201);
         } catch (Exception $e) {
             Log::error(
                 __FILE__ . '@' . __FUNCTION__ .
@@ -103,7 +103,7 @@ class GameApiController extends Controller
             if (!$data) {
                 return JsonResponse::error(message: 'Game not found', code: 404);
             }
-            
+
             return JsonResponse::success(data: $data, message: 'Game deleted successfully');
         } catch (Exception $e) {
             Log::error(

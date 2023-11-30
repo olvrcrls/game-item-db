@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use App\Base\BaseRepository;
 use App\Http\Resources\GameResource;
+use App\Http\Resources\GameResourceDatum;
 use App\Models\Game;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class GameRepository extends BaseRepository
 {
@@ -17,5 +17,10 @@ class GameRepository extends BaseRepository
     public function getResource(): string
     {
         return GameResource::class;
+    }
+
+    public function getResourceDatum(): string
+    {
+        return GameResourceDatum::class;
     }
 }
