@@ -9,8 +9,19 @@ trait HasUuid
 {
     public static function bootHasUuid(): void
     {
-        static::creating(fn (Model $model) =>
-            $model->uuid = Str::uuid(),
+        static::creating(function (Model $model) {
+                if (!$model->uuid) {
+                    $model->uuid = Str::uuid();
+                }
+            }
         );
+    }
+
+    /**
+     * Route key name for implicit route binding.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
     }
 }
