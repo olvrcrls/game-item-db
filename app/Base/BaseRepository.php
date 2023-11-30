@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
 
 abstract class BaseRepository
 {
@@ -86,6 +87,14 @@ abstract class BaseRepository
 
             return true;
         } catch (Exception $e) {
+            Log::error(
+                __FILE__ . '@' . __FUNCTION__ . ': Error deleting model',
+                [
+                    'model' => $this->model,
+                    'id' => $id,
+                    'error' => $e->getMessage(),
+                ]
+            );
             return false;
         }
     }
