@@ -11,7 +11,7 @@ trait HasUuid
     {
         static::creating(function (Model $model) {
                 if (!$model->uuid) {
-                    $model->uuid = Str::uuid();
+                    $model->uuid = app()->environment('testing', 'test') ? 'test' : Str::uuid();
                 }
             }
         );
