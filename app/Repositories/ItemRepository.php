@@ -3,6 +3,7 @@
 namespace App\Repositories;
 use App\Base\BaseRepository;
 use App\Http\Resources\ItemResource;
+use App\Http\Resources\ItemResourceDatum;
 use App\Models\Item;
 
 class ItemRepository extends BaseRepository
@@ -21,5 +22,10 @@ class ItemRepository extends BaseRepository
     public function getResource(): string
     {
         return ItemResource::class;
+    }
+
+    public function getResourceDatum(): string
+    {
+        return ItemResourceDatum::class;
     }
 }
