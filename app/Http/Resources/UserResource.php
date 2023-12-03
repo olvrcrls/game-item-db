@@ -3,10 +3,10 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Str;
 
-class UserResource extends JsonResource
+class UserResource extends ResourceCollection
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +15,16 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'username' => $this->username,
-            'discord_id' => Str::substrReplace($this->discord_id, '****', 2, 10),
-            'email' => Str::substrReplace($this->email, '****', 2, 7),
-            'email_verified_at' => $this->email_verified_at,
-            'created_at' => $this->created_at
-        ];
+        $data = [];
+        foreach ($this->collection as $user) {
+            $data[] = [
+                'username' => $user->username,
+                'discord_id' => Str::substrReplace($user->discord_id, '****', 2, 10),
+                'email' => Str::substrReplace($user->email, '****', 2, 7),
+                'email_verified_at' => $user->email_verified_at,
+                'created_at' => $user->created_at
+            ];
+        }
+        return $data;
     }
 }

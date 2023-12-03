@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ItemResource extends JsonResource
+class ItemResource extends ResourceCollection
 {
     /**
      * Transform the resource into an array.
@@ -14,18 +14,25 @@ class ItemResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'uuid' => $this->uuid,
-            'name' => ucwords($this->name),
-            'description' => $this->description,
-            'image' => $this->image,
-            'attributes' => $this->attributes,
-            'type' => $this->type,
-            'rarity' => $this->rarity,
-            'level' => $this->level,
-            'deprecated' => $this->deprecated,
-            'game' => new GameResource($this->game),
-            'created_at' => $this->created_at
-        ];
+        $data = [];
+        foreach ($this->collection as $item) {
+            $data[] = [
+                'uuid' => $item->uuid,
+                'name' => ucwords($item->name),
+                'description' => $item->description,
+                'image' => $item->image,
+                'attributes' => $item->attributes,
+                'type' => $item->type,
+                'rarity' => $item->rarity,
+                'level' => $item->level,
+                'deprecated' => $item->deprecated,
+                'game' => new GameResourceDatum($item->game),
+                // If the user requesting the data has a role of admin, include the following fields
+                // 'created_at' => $item->created_at,
+                // 'udpated' => $item->updated_at,
+            ];
+        }
+
+        return $data;
     }
 }
