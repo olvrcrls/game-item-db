@@ -29,7 +29,7 @@ class ItemResource extends ResourceCollection
                 'game' => new GameResourceDatum($item->game),
                 // If the user requesting the data has a role of admin, include the following fields
                 // 'created_at' => $item->created_at,
-                // 'udpated' => $item->updated_at,
+                // 'updated_at' => $item->updated_at,
             ];
         }
 
