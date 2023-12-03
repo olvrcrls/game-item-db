@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource(name: 'games', controller: \App\Http\Controllers\Api\GameApiController::class);
+Route::apiResource(name: 'items', controller: \App\Http\Controllers\Api\ItemApiController::class);
