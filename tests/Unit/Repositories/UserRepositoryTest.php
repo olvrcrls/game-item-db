@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\UserResourceDatum;
+
 test('it returns a new User model', function () {
     $repository = new \App\Repositories\UserRepository();
     $model = $repository->getModel();
@@ -21,7 +23,7 @@ test('it creates and finds a User model record', function () {
     $user = $model->factory()->create();
     $this->assertDatabaseHas('users', ['id' => $user->id]);
     $foundUser = $repository->find($user->id);
-    expect($foundUser)->toBeInstanceOf(\App\Models\User::class);
+    expect($foundUser)->toBeInstanceOf(UserResourceDatum::class);
     expect($foundUser->id)->toEqual($user->id);
 });
 
@@ -32,7 +34,7 @@ test('it creates and updates a User model record', function () {
     $user = $model->factory()->create();
     $this->assertDatabaseHas('users', ['id' => $user->id]);
     $updatedUser = $repository->update($user->id, ['username' => 'new_username']);
-    expect($updatedUser)->toBeInstanceOf(\App\Models\User::class);
+    expect($updatedUser)->toBeInstanceOf(UserResourceDatum::class);
     expect($updatedUser->id)->toEqual($user->id);
     expect($updatedUser->username)->toEqual('new_username'); 
 });
